@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luminous Consulting · Solving business problems with data and technology</title>
+<meta name="description" content="Luminous Consulting helps small businesses solve problems with data, technology and AI automation. Audit first, tools second.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* BDO Grotesk: add the font files to /fonts and these rules will pick them up.
+   Until then the body falls back to Inter. */
+@font-face{font-family:"BDO Grotesk";src:url("fonts/BDOGrotesk-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"BDO Grotesk";src:url("fonts/BDOGrotesk-Medium.woff2") format("woff2");font-weight:500 600;font-display:swap}
+
+:root{
+  --cream:#F3EFE7; --cream-2:#FBF8F3; --sand:#E9E1D6; --tan:#D6C7B6; --peach:#F7E3D8;
+  --orange:#FF6A00; --orange-soft:#FFB49E; --orange-text:#D24A26;
+  --ink:#2B2622; --body:#4A433D; --muted:#6B635B; --line:rgba(60,50,45,.16);
+  --radius:32px; --gutter:clamp(10px,2vw,28px);
+  --head:"Syne",sans-serif; --text:"BDO Grotesk","Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{background:var(--cream);color:var(--body);font-family:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--head);color:var(--ink);letter-spacing:-.04em}
+.outline{color:var(--fill,var(--cream));-webkit-text-stroke:var(--stroke,3px) var(--ink);paint-order:stroke fill}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 12px;border-radius:8px;z-index:100}
+.skip:focus{left:8px}
+
+/* ---------- header + sticky dock ---------- */
+.top{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:20px 24px;pointer-events:none}
+.top>*{pointer-events:auto}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{height:22px;width:auto}
+.brand span{font-family:var(--head);font-weight:600;font-size:17px;color:var(--ink);letter-spacing:-.03em}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:12px 14px 12px 22px;border-radius:999px;background:var(--orange);color:var(--ink);text-decoration:none;font-weight:500;font-size:15px;transition:transform .3s}
+.btn:hover{transform:scale(1.04)}
+.btn i{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-style:normal;font-size:13px}
+.dock{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:60;display:flex;gap:4px;padding:7px;border-radius:999px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(60,40,30,.12)}
+.dock a{padding:11px 18px;border-radius:999px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink);transition:background .35s}
+.dock a.active{background:var(--orange)}
+
+/* ---------- hero (sticky, gets covered) ---------- */
+.hero{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 6vw;overflow:hidden}
+.hero h1{font-weight:700;line-height:.98;font-size:clamp(46px,7.6vw,124px)}
+.hero .l1{display:block;padding-left:4vw}
+.hero .l2{display:block;text-align:right;padding-right:2vw}
+.hero .l1 .in,.hero .l2 .in{display:inline-block;will-change:transform}
+.hero .l2 .outline{--fill:var(--cream)}
+.hero p{margin:22px 2vw 0 auto;max-width:420px;text-align:right;font-size:clamp(18px,1.6vw,24px);line-height:1.5;color:var(--muted)}
+.hero p b{color:var(--ink);font-weight:500}
+
+/* ---------- rounded overlapping panels ---------- */
+.panel{position:relative;margin:-32px var(--gutter) 0;border-radius:var(--radius);padding:clamp(90px,14vh,140px) 6vw clamp(80px,12vh,120px)}
+.panel.first{margin-top:-40px}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:28px;margin-bottom:56px}
+.head h2{font-weight:700;font-size:clamp(44px,6.2vw,96px);line-height:.95}
+.head p{max-width:360px;font-size:16px;line-height:1.55;color:var(--muted)}
+
+/* approach */
+.approach{z-index:2;background:var(--sand);text-align:center}
+.approach .eyebrow{font-size:15px;color:var(--muted)}
+.approach .eyebrow span{color:var(--orange-text)}
+.approach h2{margin:24px auto 0;max-width:1000px;font-weight:600;font-size:clamp(32px,4.4vw,68px);line-height:1.08}
+.approach h2 .outline{--fill:var(--sand);--stroke:2.5px}
+.w{opacity:.2;transition:opacity .4s}
+.w.on{opacity:1}
+
+/* ---------- capsule reel ---------- */
+.reel{height:100vh;display:flex;align-items:center;justify-content:center;margin-top:40px}
+.capsule{position:relative;width:min(100%,1180px);height:min(62vh,540px);border-radius:999px;background:var(--tan);overflow:hidden;display:flex;align-items:center;justify-content:center;transform:scale(.6);will-change:transform}
+.capsule .scene{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity .55s ease}
+.capsule .scene.on{opacity:1}
+/* "smoke" scenes: blurred colour blobs drifting */
+.s-blob{background:var(--cream)}
+.s-blob.alt{background:var(--sand)}
+.s-blob .b{position:absolute;border-radius:50%;filter:blur(38px);mix-blend-mode:multiply;opacity:.9}
+.s-blob .b1{width:46%;height:120%;left:8%;top:-20%;background:var(--orange);animation:drift1 6s ease-in-out infinite alternate}
+.s-blob .b2{width:38%;height:90%;right:10%;top:10%;background:var(--orange-soft);animation:drift2 5s ease-in-out infinite alternate}
+.s-blob .b3{width:30%;height:70%;left:40%;bottom:-20%;background:#FFD24A;opacity:.55;animation:drift3 7s ease-in-out infinite alternate}
+.s-blob.alt .b1{background:var(--tan)}.s-blob.alt .b2{background:var(--orange)}.s-blob.alt .b3{background:var(--peach);opacity:.9}
+@keyframes drift1{to{transform:translate(30%,18%) rotate(40deg) scale(1.2)}}
+@keyframes drift2{to{transform:translate(-40%,-20%) rotate(-30deg) scale(.85)}}
+@keyframes drift3{to{transform:translate(-50%,-30%) scale(1.3)}}
+/* full-bleed project image scene */
+.s-photo img{position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;filter:grayscale(1) contrast(1.05);will-change:transform}
+.s-photo::after{content:"";position:absolute;inset:0;background:var(--peach);mix-blend-mode:screen;opacity:.55}
+.s-photo.warm::after{background:var(--orange-soft);opacity:.6}
+.s-photo.sand::after{background:var(--sand);mix-blend-mode:multiply;opacity:.9}
+/* snap-in pile */
+.s-pile{background:var(--tan)}
+.s-pile img{position:absolute;width:clamp(130px,22%,270px);transform:translate(-50%,-50%) scale(.8);opacity:0;transition:opacity .18s ease-out,transform .25s cubic-bezier(.2,.9,.3,1.2);box-shadow:0 6px 18px rgba(40,30,20,.25)}
+.s-pile img.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.capsule .title{position:relative;z-index:100000;font-family:var(--head);font-weight:700;letter-spacing:-.04em;line-height:.9;font-size:clamp(44px,8vw,132px);color:var(--ink);pointer-events:none}
+.capsule .title .outline{--fill:var(--tan)}
+.capsule .play{position:absolute;z-index:100001;left:50%;bottom:9%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);background:none;border:0;cursor:pointer;padding:8px;font-family:var(--text);text-decoration:none}
+.capsule .play i{width:30px;height:30px;border-radius:50%;background:var(--orange);display:grid;place-items:center;font-style:normal;font-size:11px}
+
+/* services */
+.services{z-index:3;background:var(--cream-2)}
+.services .outline{--fill:var(--cream-2)}
+.svc{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.1fr) 32px;gap:24px;align-items:center;padding:28px 16px;border-bottom:1px solid var(--line);border-radius:16px;transition:background .35s,padding .35s}
+.row:hover{background:var(--peach);padding-left:28px}
+.row .n{font-size:13px;color:var(--muted)}
+.row h3{font-weight:600;font-size:clamp(24px,2.8vw,42px)}
+.row p{font-size:16px;line-height:1.5;color:var(--muted)}
+.row svg{transition:transform .35s}
+.row:hover svg{transform:rotate(-45deg)}
+.tag{display:inline-block;vertical-align:middle;margin-left:8px;font-family:var(--text);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;background:#FFD9CC;color:var(--ink)}
+
+/* process */
+.process{z-index:4;background:var(--sand)}
+.process .outline{--fill:var(--sand)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.step{background:var(--cream-2);border-radius:24px;padding:30px 26px 32px;min-height:300px;display:flex;flex-direction:column;justify-content:flex-start}
+.step .num{margin-bottom:96px}
+.step .num{font-family:var(--head);font-weight:700;font-size:60px;line-height:1;color:var(--orange);letter-spacing:-.04em}
+.step h4{font-weight:700;font-size:26px;margin-bottom:10px}
+.step p{font-size:15px;line-height:1.5;color:var(--muted)}
+
+/* work: horizontal */
+.work{z-index:5;background:var(--sand);padding:0;overflow:hidden}
+.work-pin{height:100vh;display:flex;align-items:center;position:relative}
+.work-bg{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;white-space:nowrap;font-family:var(--head);font-weight:700;letter-spacing:-.04em;font-size:clamp(90px,14vw,230px);line-height:.9;color:var(--tan)}
+.track{position:relative;display:flex;align-items:center;gap:36px;padding-left:60vw;padding-right:8vw;will-change:transform}
+.card{flex:0 0 auto;position:relative;border-radius:20px;overflow:hidden;background:var(--ink);box-shadow:0 12px 30px rgba(60,40,30,.08);display:flex;align-items:flex-end;text-decoration:none}
+.card.land{width:min(34vw,460px);aspect-ratio:4/3}
+.card.port{width:min(25vw,340px);aspect-ratio:3/4}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) brightness(1.1);transition:transform .8s cubic-bezier(.2,.8,.2,1),filter .5s}
+.card .tint{position:absolute;inset:0;background:var(--tint,var(--tan));mix-blend-mode:multiply;opacity:var(--o,1);transition:opacity .5s}
+.card:hover img{transform:scale(1.05);filter:none}
+.card:hover .tint{opacity:0}
+.card .lab{position:relative;margin:16px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.94);font-size:13px;color:var(--ink)}
+.card .lab b{font-weight:600}
+.next{flex:0 0 auto;font-size:20px;padding:18px 28px}
+
+/* testimonials */
+.testi{z-index:6;background:var(--cream)}
+.quotes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.quote{background:var(--cream-2);border-radius:24px;padding:34px 30px;display:flex;flex-direction:column;justify-content:space-between;gap:32px;min-height:320px}
+.quote blockquote{font-size:18px;line-height:1.55;color:var(--ink)}
+.quote figcaption{display:flex;align-items:center;gap:14px}
+.quote .av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-family:var(--head);font-weight:700;font-size:15px;color:var(--ink)}
+.quote b{display:block;font-weight:600;color:var(--ink)}
+.quote small{font-size:14px;color:var(--muted)}
+
+/* contact */
+.contact{z-index:7;background:var(--peach);border-radius:var(--radius) var(--radius) 0 0;text-align:center;padding-top:clamp(120px,18vh,170px);padding-bottom:140px}
+.contact h2{font-weight:700;font-size:clamp(60px,10vw,170px);line-height:.9}
+.contact .outline{--fill:var(--peach)}
+.contact p{margin:32px auto 24px;max-width:460px;font-size:17px;line-height:1.5;color:var(--muted)}
+.contact .mail{font-size:clamp(20px,2.3vw,32px);text-decoration:none;color:var(--ink);border-bottom:2px solid var(--orange-text);padding-bottom:4px}
+.foot{margin-top:120px;display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .row{grid-template-columns:40px minmax(0,1fr) 24px}
+  .row p{grid-column:2/3}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .quotes{grid-template-columns:minmax(0,1fr)}
+  .card.land{width:72vw}.card.port{width:56vw}
+  .hero .l1{padding-left:0}
+}
+@media (max-width:560px){
+  .steps{grid-template-columns:minmax(0,1fr)}
+  .dock a{padding:10px 11px;font-size:11px}
+  .dock a.opt{display:none}
+  .btn{padding:10px 12px 10px 16px;font-size:13px}
+  .brand span{display:none}
+  .capsule{height:46vh}
+  .outline{--stroke:2px}
+}
+@media (prefers-reduced-motion:reduce){
+  .capsule{transform:none}.w{opacity:1}.capsule .scene:nth-child(1){opacity:1}.capsule .scene:nth-child(1) img{opacity:1;transform:translate(-50%,-50%)}.s-blob .b{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="#home"><img src="images/luminous-logo.png" alt="Luminous"><span>Consulting</span></a>
+  <a class="btn" href="#contact">Book a free audit <i aria-hidden="true">→</i></a>
+</header>
+
+<nav class="dock" aria-label="Main">
+  <a href="#home" class="active">Home</a>
+  <a href="#approach" class="opt">Approach</a>
+  <a href="#services">Services</a>
+  <a href="#work">Work</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<main id="main">
+<section class="hero" id="home" data-sec="home">
+  <h1>
+    <span class="l1"><span class="in" id="l1">Solving business</span></span>
+    <span class="l2"><span class="in outline" id="l2">problems</span></span>
+  </h1>
+  <p>with <b>data</b> and <b>technology</b>.</p>
+</section>
+
+<section class="panel first approach" id="approach" data-sec="approach">
+  <p class="eyebrow">Audit first, <span>tools second</span></p>
+  <h2 id="reveal">I audit your business needs and recommend the best options for <span class="outline">efficiency</span> and <span class="outline">ease.</span></h2>
+
+  <div class="reel" id="reel">
+    <div class="capsule" id="capsule">
+      <!-- Scenes play in order with hard cuts. To use a real video instead, replace the scenes with:
+           <video src="images/reel.mp4" autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video> -->
+      <div class="scene s-pile" aria-hidden="true"><img src="images/reel-01.jpg" alt=""><img src="images/reel-03.jpg" alt=""><img src="images/reel-04.jpg" alt=""><img src="images/reel-02.jpg" alt=""><img src="images/reel-07.jpg" alt=""><img src="images/reel-05.jpg" alt=""><img src="images/reel-06.jpg" alt=""><img src="images/reel-09.jpg" alt=""><img src="images/reel-08.jpg" alt=""></div>
+      <div class="scene s-photo" data-dir="1" aria-hidden="true"><img src="images/lc-living-slides.jpg" alt=""></div>
+      <div class="scene s-photo warm" data-dir="-1" aria-hidden="true"><img src="images/lc-fitself.jpg" alt=""></div>
+      <div class="scene s-photo sand" data-dir="1" aria-hidden="true"><img src="images/lc-lumibrand.jpg" alt=""></div>
+      <div class="scene s-photo" data-dir="-1" aria-hidden="true"><img src="images/lc-lawfirm.jpg" alt=""></div>
+      <div class="scene s-photo warm" data-dir="1" aria-hidden="true"><img src="images/lc-beyond.jpg" alt=""></div>
+      <div class="scene s-blob" aria-hidden="true"><span class="b b1"></span><span class="b b2"></span><span class="b b3"></span></div>
+      <p class="title">Some of <span class="outline">my work</span></p>
+      <a class="play" href="#work"><i aria-hidden="true">→</i>See the projects</a>
+    </div>
+  </div>
+</section>
+
+<section class="panel services" id="services" data-sec="services">
+  <div class="head">
+    <h2>What I <span class="outline">offer</span></h2>
+    <p>Practical, people-first solutions for small businesses. Pick one, or let the audit tell us what you actually need.</p>
+  </div>
+  <div class="svc">
+    <div class="row"><span class="n">01</span><h3>Consultancy &amp; audit</h3><p>A clear look at how your business runs today, where time and money leak, and what to fix first.</p><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="row"><span class="n">02</span><h3>Brand strategy</h3><p>Positioning, messaging and identity that make it obvious who you help and why you.</p><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="row"><span class="n">03</span><h3>Design</h3><p>Websites, UX and visual design that are easy to use and easy to update.</p><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="row"><span class="n">04</span><h3>Custom applications</h3><p>Booking systems, client portals and internal tools built around how you really work.</p><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="row"><span class="n">05</span><h3>AI automations</h3><p>Hand repetitive admin to AI: emails, enquiries, scheduling, documents and follow-ups.</p><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="row"><span class="n">06</span><h3>Data dashboards <span class="tag">New</span></h3><p>See sales, bookings and customers in one place, so decisions are based on numbers.</p><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="row"><span class="n">07</span><h3>Training &amp; support</h3><p>Handover sessions and ongoing help so your team actually uses the new tools.</p><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+  </div>
+</section>
+
+<section class="panel process" data-sec="services">
+  <div class="head">
+    <h2>How it <span class="outline">works</span></h2>
+    <p>Four simple steps. No jargon, no long contracts.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><span class="num">01</span><div><h4>Audit</h4><p>We map your processes, tools and pain points together.</p></div></div>
+    <div class="step"><span class="num">02</span><div><h4>Recommend</h4><p>You get a short, prioritised plan with costs and quick wins.</p></div></div>
+    <div class="step"><span class="num">03</span><div><h4>Build</h4><p>I design, build and connect the solution, step by step.</p></div></div>
+    <div class="step"><span class="num">04</span><div><h4>Support</h4><p>Training, tweaks and check-ins so it keeps working.</p></div></div>
+  </div>
+</section>
+
+<section class="panel work" id="work" data-sec="work" aria-label="Selected work">
+  <div class="work-pin">
+    <p class="work-bg" id="workBg" aria-hidden="true">Selected work</p>
+    <div class="track" id="track">
+      <a class="card land" href="#work"><img src="images/lc-fitself.jpg" alt="Fitself website"><span class="tint"></span><span class="lab"><b>Fitself</b> · Fitness website</span></a>
+      <a class="card port" href="#work" style="--tint:var(--orange);--o:.75"><img src="images/reel-03.jpg" alt="Luminous Living website"><span class="tint"></span><span class="lab"><b>Luminous Living</b> · Lifestyle brand &amp; site</span></a>
+      <a class="card land" href="#work"><img src="images/lc-beyond.jpg" alt="Beyond brand and website"><span class="tint"></span><span class="lab"><b>Beyond</b> · Health &amp; wellness</span></a>
+      <a class="card port" href="#work" style="--tint:var(--orange);--o:.75"><img src="images/lc-lumibrand.jpg" alt="Lumibrand presentation"><span class="tint"></span><span class="lab"><b>Lumibrand</b> · Branding &amp; design</span></a>
+      <a class="card land" href="#work"><img src="images/reel-07.jpg" alt="Plentiful website and branding"><span class="tint"></span><span class="lab"><b>Plentiful</b> · Health &amp; wellness</span></a>
+      <a class="card port" href="#work" style="--tint:var(--orange);--o:.75"><img src="images/lc-lawfirm.jpg" alt="Law firm website on an iMac"><span class="tint"></span><span class="lab"><b>Law firm</b> · Website</span></a>
+      <a class="btn next" href="#contact">Your project next <i aria-hidden="true">→</i></a>
+    </div>
+  </div>
+</section>
+
+<section class="panel testi" id="testimonials" data-sec="work">
+  <div class="head">
+    <h2>Kind <span class="outline">words</span></h2>
+    <p>What clients say about working with me on design and the technical side.</p>
+  </div>
+  <div class="quotes">
+    <figure class="quote"><blockquote>“Most designers aren’t as familiar with the technical side, however, Anabel has a creative and elegant design style and understands all the latest nuances which has helped my businesses immensely. It feels like she’s an extension of my team.”</blockquote><figcaption><span class="av" style="background:var(--orange)" aria-hidden="true">SH</span><span><b>Stacie Hiras</b><small>CEO, Whitehouse Bride</small></span></figcaption></figure>
+    <figure class="quote"><blockquote>“She can work on designs and also technical issues we encounter. She’s an inspiration for me and my business.”</blockquote><figcaption><span class="av" style="background:var(--tan)" aria-hidden="true">MN</span><span><b>Maya Nissim</b><small>CEO, Time is Write</small></span></figcaption></figure>
+    <figure class="quote"><blockquote>“You have a gift for identifying what is pivotal to the business.”</blockquote><figcaption><span class="av" style="background:var(--orange-soft)" aria-hidden="true">HH</span><span><b>Heather Hall</b><small>CEO, M3 Impact</small></span></figcaption></figure>
+  </div>
+</section>
+
+<section class="panel contact" id="contact" data-sec="contact">
+  <h2>Let’s solve it<br><span class="outline">together</span></h2>
+  <p>Tell me what’s slowing your business down. The first audit call is free.</p>
+  <a class="mail" href="mailto:hi@luminous-brand.com">hi@luminous-brand.com</a>
+  <div class="foot"><span>© 2026 Luminous Consulting</span><span>London, UK</span></div>
+</section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script>
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasGsap = !!window.gsap;
+  if (hasGsap) gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------- smooth scroll (Lenis), synced with GSAP ---------- */
+  let lenis = null;
+  try {
+    if (!reduce && window.Lenis) {
+      lenis = new Lenis({ lerp: 0.09 });
+      if (hasGsap) { lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
+      else { const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); }
+    }
+  } catch (e) { lenis = null; }
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const el = document.querySelector(a.getAttribute('href'));
+    if (!el) return; e.preventDefault();
+    lenis ? lenis.scrollTo(el, { duration: 1.4 }) : el.scrollIntoView({ behavior: 'smooth' });
+  }));
+
+  /* ---------- word-by-word reveal ---------- */
+  const rv = document.getElementById('reveal');
+  [...rv.childNodes].forEach(n => {
+    if (n.nodeType === 3) {
+      const f = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(p => {
+        if (!p) return;
+        if (/^\s+$/.test(p)) return f.appendChild(document.createTextNode(p));
+        const s = document.createElement('span'); s.className = 'w'; s.textContent = p; f.appendChild(s);
+      });
+      n.replaceWith(f);
+    } else n.classList.add('w');
+  });
+  const words = [...rv.querySelectorAll('.w')];
+
+  /* ---------- active menu item ---------- */
+  const links = [...document.querySelectorAll('.dock a')];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.dataset.sec));
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('[data-sec]').forEach(s => io.observe(s));
+
+  if (!hasGsap || reduce) { words.forEach(w => w.classList.add('on')); return; }
+
+  /* ---------- hero: lines slide in from opposite sides, then drift apart on scroll ---------- */
+  gsap.from('#l1', { xPercent: -120, opacity: 0, duration: 1.3, ease: 'expo.out' });
+  gsap.from('#l2', { xPercent: 120, opacity: 0, duration: 1.3, delay: .12, ease: 'expo.out' });
+  gsap.from('.hero p', { y: 20, opacity: 0, duration: 1, delay: .6, ease: 'power3.out' });
+  gsap.to('#l1', { x: '-14vw', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('#l2', { x: '14vw', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.fromTo('.hero h1, .hero p', { opacity: 1, scale: 1 }, { opacity: 0, scale: .94, immediateRender: false, scrollTrigger: { trigger: '.approach', start: 'top 60%', end: 'top top', scrub: true } });
+
+  ScrollTrigger.create({
+    trigger: rv, start: 'top 85%', end: 'bottom 45%', scrub: true,
+    onUpdate: s => { const n = Math.round(s.progress * words.length); words.forEach((w, i) => w.classList.toggle('on', i < n)); }
+  });
+
+  /* ---------- capsule reel: montage with hard cuts, like a video ----------
+     smoke / project-image scenes hold ~1s; pile scenes snap images in one by one */
+  const capsule = document.getElementById('capsule');
+  gsap.to(capsule, { scale: 1, ease: 'none', scrollTrigger: { trigger: '#reel', start: 'top 85%', end: 'center center', scrub: 1 } });
+
+  const scenes = [...capsule.querySelectorAll('.scene')];
+  // pile positions: a tight cluster just left of centre, drifting right as it grows ([left%, top%])
+  const pileSpots = [[34,44],[39,55],[37,37],[45,50],[50,39],[55,56],[60,44],[48,60],[42,32]];
+  capsule.querySelectorAll('.s-pile').forEach(sc => sc.querySelectorAll('img').forEach((im, i) => {
+    const [x, y] = pileSpots[i % pileSpots.length]; im.style.left = x + '%'; im.style.top = y + '%'; im.style.zIndex = i + 1;
+  }));
+  const reel = gsap.timeline({ repeat: -1, paused: true });
+  scenes.forEach(sc => {
+    reel.add(() => {
+      scenes.forEach(o => {
+        const was = o.classList.contains('on');
+        o.classList.toggle('on', o === sc);
+        if (was && o !== sc && o.classList.contains('s-pile')) setTimeout(() => o.querySelectorAll('img').forEach(im => im.classList.remove('on')), 600);
+      });
+    });
+    if (sc.classList.contains('s-pile')) {
+      sc.querySelectorAll('img').forEach((im, i) => reel.add(() => im.classList.add('on'), '+=' + (i ? 0.15 : 0.1)));
+      reel.add(() => {}, '+=0.7');
+    } else if (sc.classList.contains('s-photo')) {
+      const img = sc.querySelector('img'), d = +sc.dataset.dir || 1;
+      reel.add(() => gsap.fromTo(img, { scale: 1.12, xPercent: -3 * d, yPercent: 2 }, { scale: 1, xPercent: 3 * d, yPercent: -2, duration: 3.4, ease: 'none' }));
+      reel.add(() => {}, '+=2.6');
+    } else {
+      reel.add(() => {}, '+=1.4');
+    }
+  });
+  ScrollTrigger.create({ trigger: '#reel', start: 'top 80%', end: 'bottom 10%',
+    onToggle: s => s.isActive ? reel.play() : reel.pause() });
+
+  /* ---------- process cards rise in ---------- */
+  gsap.from('.step', { y: 60, opacity: 0, duration: .9, ease: 'power3.out', stagger: .1, scrollTrigger: { trigger: '.steps', start: 'top 80%' } });
+  gsap.from('.quote', { y: 50, opacity: 0, duration: .9, ease: 'power3.out', stagger: .12, scrollTrigger: { trigger: '.quotes', start: 'top 80%' } });
+
+  /* ---------- selected work: scrolls sideways while pinned ---------- */
+  const track = document.getElementById('track');
+  const dist = () => track.scrollWidth - innerWidth;
+  gsap.to(track, { x: () => -dist(), ease: 'none',
+    scrollTrigger: { trigger: '.work-pin', start: 'top top', end: () => '+=' + dist(), scrub: 1, pin: true, invalidateOnRefresh: true } });
+  gsap.to('#workBg', { xPercent: -18, ease: 'none',
+    scrollTrigger: { trigger: '.work-pin', start: 'top top', end: () => '+=' + dist(), scrub: 1 } });
+})();
+</script>
+</body>
+</html>
