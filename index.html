@@ -38,8 +38,9 @@ h1,h2,h3,h4{font-family:var(--head);color:var(--ink);letter-spacing:-.04em}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand img{height:22px;width:auto}
 .brand span{font-family:var(--head);font-weight:600;font-size:17px;color:var(--ink);letter-spacing:-.03em}
-.btn{display:inline-flex;align-items:center;gap:12px;padding:12px 14px 12px 22px;border-radius:999px;background:var(--orange);color:var(--ink);text-decoration:none;font-weight:500;font-size:15px;transition:transform .3s}
+.btn{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;padding:12px 14px 12px 22px;border-radius:999px;background:var(--orange);color:var(--ink);text-decoration:none;font-weight:500;font-size:15px;transition:transform .3s}
 .btn:hover{transform:scale(1.04)}
+.btn-short{display:none}
 .btn i{width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-style:normal;font-size:13px}
 .dock{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:60;display:flex;gap:4px;padding:7px;border-radius:999px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(60,40,30,.12)}
 .dock a{padding:11px 18px;border-radius:999px;font-size:13px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink);transition:background .35s}
@@ -171,7 +172,11 @@ h1,h2,h3,h4{font-family:var(--head);color:var(--ink);letter-spacing:-.04em}
   .steps{grid-template-columns:minmax(0,1fr)}
   .dock a{padding:10px 11px;font-size:11px}
   .dock a.opt{display:none}
-  .btn{padding:10px 12px 10px 16px;font-size:13px}
+  .top{padding:14px}
+  .brand img{height:18px}
+  .btn{padding:8px 8px 8px 14px;font-size:13px;gap:8px}
+  .btn i{width:22px;height:22px}
+  .btn-long{display:none}.btn-short{display:inline}
   .brand span{display:none}
   .capsule{height:46vh}
   .outline{--stroke:2px}
@@ -186,7 +191,7 @@ h1,h2,h3,h4{font-family:var(--head);color:var(--ink);letter-spacing:-.04em}
 
 <header class="top">
   <a class="brand" href="#home"><img src="luminous-logo.png" alt="Luminous"><span>Consulting</span></a>
-  <a class="btn" href="#contact">Book a free audit <i aria-hidden="true">→</i></a>
+  <a class="btn" href="#contact"><span class="btn-long">Book a free audit</span><span class="btn-short">Free audit</span><i aria-hidden="true">→</i></a>
 </header>
 
 <nav class="dock" aria-label="Main">
