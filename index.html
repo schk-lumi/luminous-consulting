@@ -47,12 +47,12 @@ h1,h2,h3,h4{font-family:var(--head);color:var(--ink);letter-spacing:-.04em}
 .dock a.active{background:var(--orange)}
 
 /* ---------- hero (sticky, gets covered) ---------- */
-.hero{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 6vw;overflow:hidden}
+.hero{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 6vw;overflow:hidden;background:radial-gradient(ellipse 85% 75% at 50% 30%,rgba(255,106,0,.15),rgba(255,180,158,.10) 50%,transparent 80%),radial-gradient(circle at 85% 90%,rgba(255,180,158,.12),transparent 40%)}
 .hero h1{font-weight:700;line-height:.98;font-size:clamp(46px,7.6vw,124px)}
 .hero .l1{display:block;padding-left:4vw}
 .hero .l2{display:block;text-align:right;padding-right:2vw}
 .hero .l1 .in,.hero .l2 .in{display:inline-block;will-change:transform}
-.hero .l2 .outline{--fill:var(--cream)}
+.hero .l2 .outline{--fill:transparent}
 .hero p{margin:22px 2vw 0 auto;max-width:420px;text-align:right;font-size:clamp(18px,1.6vw,24px);line-height:1.5;color:var(--muted)}
 .hero p b{color:var(--ink);font-weight:500}
 
