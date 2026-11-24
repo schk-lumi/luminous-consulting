@@ -76,7 +76,8 @@ h1,h2,h3,h4{font-family:var(--head);color:var(--ink);letter-spacing:-.04em}
 
 /* ---------- capsule reel ---------- */
 .reel{height:100vh;display:flex;align-items:center;justify-content:center;margin-top:40px}
-.capsule{position:relative;width:min(100%,1180px);height:min(62vh,540px);border-radius:999px;background:var(--tan);overflow:hidden;display:flex;align-items:center;justify-content:center;transform:scale(.6);will-change:transform}
+.capsule{position:relative;width:min(100%,1180px);height:min(62vh,540px);border-radius:999px;background:var(--tan);overflow:hidden;display:flex;align-items:center;justify-content:center;transform:scale(.6);will-change:transform;isolation:isolate;
+-webkit-mask-image:-webkit-radial-gradient(white,black);}
 .capsule .scene{position:absolute;inset:0;overflow:hidden;opacity:0;transition:opacity .55s ease}
 .capsule .scene.on{opacity:1}
 /* "smoke" scenes: blurred colour blobs drifting */
